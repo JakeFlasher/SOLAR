@@ -139,3 +139,26 @@ examples/*/output/
 # Temporary test files
 test_output/
 
+# RLCR loop / skill local state — never commit; per-checkout scratch.
+.humanize*
+
+# CUTLASS sm_120 profiler build artifacts (per-script bench_cutlass_5060.sh).
+# The default --build-dir is cutlass/build-sm120-profiler; the glob covers any
+# build* sibling so users can override --build-dir without polluting git.
+/cutlass/build*/
+
+# RTX 5060 measurement artifacts.
+# Ignore binary blobs (raw profiler captures, compiled samples) but keep
+# the human-readable artifacts (CSV / log / JSON / Markdown / dry-run lists)
+# tracked, even though the global *.log / *.so rules above would otherwise
+# swallow them. .gitignore precedence is last-match-wins for files.
+/measurements/rtx5060/**/*.bin
+/measurements/rtx5060/**/*.ncu-rep
+/measurements/rtx5060/**/*.qdrep
+/measurements/rtx5060/**/*.nsys-rep
+!/measurements/rtx5060/**/*.csv
+!/measurements/rtx5060/**/*.log
+!/measurements/rtx5060/**/*.json
+!/measurements/rtx5060/**/*.txt
+!/measurements/rtx5060/**/*.md
+

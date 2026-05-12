@@ -1,0 +1,3 @@
+- [User's GPU](user_gpu.md) — RTX 5060 Laptop (Blackwell sm_120), CUDA 13.2, ncu 2026.1.1, no system torch.
+- [SOLAR arch YAML convention](solar_arch_yaml_convention.md) — whole-chip MAC/cycle at chosen `freq_GHz`; `TFLOPS = MAC/cycle * 2 * freq_GHz / 1000`.
+- [RTX 5060 probe recipe](rtx5060_probe_recipe.md) — working ncu metrics + CUDA 13 attribute API; pitfalls from a prior worker's hallucinated script.

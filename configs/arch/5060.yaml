@@ -1,0 +1,13 @@
+name: "RTX_5060_Laptop"
+SRAM_capacity: 33554432  # L2 32MB (cudaDeviceProp.l2CacheSize)
+SRAM_byte_per_cycle: 1024  # 2.56TB/s @ 2.497GHz (NCU lts__t_bytes.sum.peak_sustained)
+DRAM_capacity: 8082096128  # ~7.71GiB GDDR7 visible (cudaDeviceProp.totalGlobalMem; advertised 8GB)
+DRAM_byte_per_cycle: 153.8  # 384GB/s @ 2.497GHz (12001MHz mem × 2 × 128b / 8 = 384GB/s)
+freq_GHz: 2.497  # boost clock (NVIDIA spec; nvidia-smi clocks.max.sm reports 3090 hardware max)
+MAC_per_cycle_fp32_sm: 3328  # 26 SMs × 128 FP32 ALU: @ 2.497GHz = 16.62 TFLOPS
+MAC_per_cycle_int8_tc: 28634  # @ 2.497GHz: 143 TOPS dense (= FP8 throughput on 5th-gen TC)
+MAC_per_cycle_tf32_tc: 7159  # @ 2.497GHz: 35.75 TFLOPS dense
+MAC_per_cycle_fp16_tc: 14317  # @ 2.497GHz: 71.50 TFLOPS dense
+MAC_per_cycle_bf16_tc: 14317  # Same as FP16 on 5th-gen TC
+MAC_per_cycle_fp8_tc: 28634  # @ 2.497GHz: 143 TFLOPS dense
+MAC_per_cycle_nvfp4_tc: 57269  # @ 2.497GHz: 286 TFLOPS dense (572 AI TOPS sparse FP4 / 2)

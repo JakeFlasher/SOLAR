@@ -71,7 +71,7 @@ OUTPUT_DIR="${SOLAR_ROOT}/measurements/rtx5060/cutlass"
 CUTLASS_DIR="${SOLAR_ROOT}/cutlass"
 BUILD_DIR=""
 KERNEL_FILTER_BF16='*sm120*bf16*'
-KERNEL_FILTER_FP8='*sm120*fp8*'
+KERNEL_FILTER_FP8='*sm120*e4m3*'
 JOBS=8
 SKIP_BUILD=false
 DO_CLEAN=false
@@ -144,7 +144,11 @@ Options (all have defaults; defaults shown in brackets):
                                   concrete names before the timed run.
                                   ['*sm120*bf16*']
 
-  --kernel-filter-fp8=<glob>      Same as above for FP8. ['*sm120*fp8*']
+  --kernel-filter-fp8=<glob>      Same as above for FP8. CUTLASS v4.4.1 sm_120
+                                  kernel names use the e4m3/e5m2 microformat
+                                  tokens rather than the literal 'fp8', so the
+                                  default targets the e4m3 input variant.
+                                  ['*sm120*e4m3*']
 
   --jobs=<int>                    Parallel build jobs (cmake --build --parallel).
                                   Default is conservative for a laptop. [8]
@@ -514,7 +518,10 @@ verify_kernel_filter() {
   log_info "kernels matched bf16 (${KERNEL_FILTER_BF16}): ${N_KERNELS_MATCHED_BF16}"
   log_info "kernels matched fp8  (${KERNEL_FILTER_FP8}): ${N_KERNELS_MATCHED_FP8}"
 
-  if (( N_KERNELS_MATCHED_BF16 == 0 && N_KERNELS_MATCHED_FP8 == 0 )); then
+  # Treat each required precision independently: if EITHER filter matched
+  # zero kernels, that's a failure mode unless --allow-empty-kernels was
+  # explicitly passed. handle_empty_kernels honors that flag internally.
+  if (( N_KERNELS_MATCHED_BF16 == 0 )) || (( N_KERNELS_MATCHED_FP8 == 0 )); then
     handle_empty_kernels
   fi
 
@@ -1081,22 +1088,33 @@ cutlass_fp8_dense, cutlass_fp8_blocks = split_dense_blockscaled(fp8_csv)
 
 def fmt(stats, key, missing_link):
     if stats is None or stats.get(key) is None:
-        return f"N/A — see [log]({missing_link})"
+        return f"N/A — see {missing_link}"
     return f"{stats[key]:.2f}"
 
 show_best = stat_mode in ('best', 'both')
 show_median = stat_mode in ('median', 'both')
 
-def row(name, precision_triplet, bf16_stats, fp8_stats, source_link, missing_link):
+def row(name, precision_triplet, bf16_stats, fp8_stats,
+        source_link, bf16_missing_link, fp8_missing_link):
     cells = [name, precision_triplet]
     if show_best:
-        cells.append(fmt(bf16_stats, 'best', missing_link) if bf16_stats else "N/A")
-        cells.append(fmt(fp8_stats, 'best', missing_link) if fp8_stats else "N/A")
+        cells.append(fmt(bf16_stats, 'best', bf16_missing_link))
+        cells.append(fmt(fp8_stats, 'best', fp8_missing_link))
     if show_median:
-        cells.append(fmt(bf16_stats, 'median', missing_link) if bf16_stats else "N/A")
-        cells.append(fmt(fp8_stats, 'median', missing_link) if fp8_stats else "N/A")
+        cells.append(fmt(bf16_stats, 'median', bf16_missing_link))
+        cells.append(fmt(fp8_stats, 'median', fp8_missing_link))
     cells.append(source_link)
     return '| ' + ' | '.join(cells) + ' |'
+
+def existing(p):
+    return p and Path(p).is_file()
+
+def link(label, path):
+    return f'[{label}]({path})' if existing(path) else None
+
+def joined(*parts):
+    parts = [p for p in parts if p]
+    return ', '.join(parts) if parts else 'N/A'
 
 header_cells = ['Source', 'Precision triplet']
 if show_best:
@@ -1115,41 +1133,49 @@ lines.append("")
 lines.append('| ' + ' | '.join(header_cells) + ' |')
 lines.append('| ' + ' | '.join(separator_cells) + ' |')
 
-# Spec peak
+# Per-cell missing-data links: spec row points at the yaml; cuBLASLt rows
+# point at the per-precision CSV; CUTLASS rows point at the per-precision log.
 spec_link = '[configs/arch/5060.yaml](../../configs/arch/5060.yaml)'
+spec_missing = spec_link
+cublaslt_missing_bf16 = link('cublaslt_bf16_csv', cublaslt_bf16) or 'N/A (no source)'
+cublaslt_missing_fp8  = link('cublaslt_fp8_csv',  cublaslt_fp8)  or 'N/A (no source)'
+cutlass_missing_bf16 = link('bf16 log', bf16_log) or '(no log)'
+cutlass_missing_fp8  = link('fp8 log',  fp8_log)  or '(no log)'
+
+# Spec peak
 lines.append(row(
     'Spec peak',
     'bf16/bf16 dense, fp8/fp8 dense',
     {'best': bf16_peak, 'median': bf16_peak} if bf16_peak else None,
     {'best': fp8_peak, 'median': fp8_peak} if fp8_peak else None,
     spec_link,
-    spec_link,
+    spec_missing, spec_missing,
 ))
 
-# cuBLASLt achieved
-cublaslt_link_bf16 = f'[{cublaslt_bf16}]({cublaslt_bf16})' if cublaslt_bf16 else 'N/A'
-cublaslt_link_fp8  = f'[{cublaslt_fp8}]({cublaslt_fp8})'  if cublaslt_fp8 else 'N/A'
-cublaslt_link = ', '.join(x for x in (cublaslt_link_bf16, cublaslt_link_fp8) if x != 'N/A') or 'N/A'
+# cuBLASLt achieved (source link only includes existing CSVs)
+cublaslt_link = joined(link('cublaslt_bf16', cublaslt_bf16),
+                       link('cublaslt_fp8',  cublaslt_fp8))
 lines.append(row(
     'cuBLASLt achieved',
     'bf16/bf16 dense, fp8/fp8 dense',
     cublaslt_bf16_stats,
     cublaslt_fp8_stats,
     cublaslt_link,
-    cublaslt_link,
+    cublaslt_missing_bf16, cublaslt_missing_fp8,
 ))
 
+# CUTLASS source-link only includes the precision CSVs that actually exist
+cutlass_link = joined(link('cutlass_profiler_bf16', bf16_csv),
+                      link('cutlass_profiler_fp8',  fp8_csv))
+
 # CUTLASS dense
-cutlass_link_bf16 = f'[cutlass_profiler_bf16]({bf16_csv})'
-cutlass_link_fp8  = f'[cutlass_profiler_fp8]({fp8_csv})'
-cutlass_link = f'{cutlass_link_bf16}, {cutlass_link_fp8}'
 lines.append(row(
     'CUTLASS dense',
     'bf16/bf16/fp32_acc, fp8_e4m3/fp8_e4m3/fp32_acc',
     cutlass_bf16_dense,
     cutlass_fp8_dense,
     cutlass_link,
-    f'[bf16 log]({bf16_log})',
+    cutlass_missing_bf16, cutlass_missing_fp8,
 ))
 
 # CUTLASS blockscaled (separate row per DEC-1)
@@ -1159,7 +1185,7 @@ lines.append(row(
     cutlass_bf16_blocks,
     cutlass_fp8_blocks,
     cutlass_link,
-    f'[bf16 log]({bf16_log})',
+    cutlass_missing_bf16, cutlass_missing_fp8,
 ))
 
 lines.append('')
@@ -1188,33 +1214,75 @@ update_memory() {
   fi
 
   local heading="## CUTLASS v4.4.1 cross-check (run: ${RUN_TIMESTAMP})"
-  if grep -F -q -- "$heading" "$memory_file"; then
-    log_warn "subsection with timestamp ${RUN_TIMESTAMP} already exists — replacing in place"
-    python3 - "$memory_file" "$heading" "$RESULT_STATUS" "$N_KERNELS_MATCHED_BF16" "$N_KERNELS_MATCHED_FP8" "$KERNEL_FILTER_BF16" "$KERNEL_FILTER_FP8" "${OUTPUT_DIR}/manifest.json" <<'PYEOF'
-import re, sys
+  local bf16_csv="${OUTPUT_DIR}/cutlass_profiler_bf16_${M}.csv"
+  local fp8_csv="${OUTPUT_DIR}/cutlass_profiler_fp8_${M}.csv"
+
+  python3 - "$memory_file" "$heading" "$RESULT_STATUS" \
+    "$N_KERNELS_MATCHED_BF16" "$N_KERNELS_MATCHED_FP8" \
+    "$KERNEL_FILTER_BF16" "$KERNEL_FILTER_FP8" \
+    "${OUTPUT_DIR}/manifest.json" \
+    "$bf16_csv" "$fp8_csv" <<'PYEOF'
+import csv, re, statistics, sys
 from pathlib import Path
-mem, heading, status, n_bf16, n_fp8, filt_bf16, filt_fp8, manifest = sys.argv[1:9]
-text = Path(mem).read_text()
+
+(mem, heading, status, n_bf16, n_fp8, filt_bf16, filt_fp8,
+ manifest, bf16_csv, fp8_csv) = sys.argv[1:11]
+
+def parse_tflops(path):
+    if not path or not Path(path).is_file():
+        return None
+    rows = []
+    with open(path, newline='') as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            for key, divisor in (('GFLOPs', 1000.0), ('GFLOPS', 1000.0),
+                                 ('tflops', 1.0), ('TFLOPS', 1.0)):
+                v = row.get(key)
+                if not v:
+                    continue
+                try:
+                    rows.append(float(v) / divisor)
+                except (TypeError, ValueError):
+                    pass
+                break
+    if not rows:
+        return None
+    return {'best': max(rows),
+            'median': statistics.median(rows),
+            'count': len(rows)}
+
+def fmt(stats):
+    if stats is None:
+        return 'no measurements'
+    return (f"best {stats['best']:.2f} TFLOPS, "
+            f"median {stats['median']:.2f} TFLOPS "
+            f"(n={stats['count']})")
+
+bf16_stats = parse_tflops(bf16_csv)
+fp8_stats = parse_tflops(fp8_csv)
+
 new_block = (
     f"{heading}\n\n"
-    f"- Kernel filter BF16: `{filt_bf16}` matched {n_bf16} kernel(s)\n"
-    f"- Kernel filter FP8: `{filt_fp8}` matched {n_fp8} kernel(s)\n"
+    f"- Kernel filter BF16: `{filt_bf16}` matched {n_bf16} kernel(s); "
+    f"profiled: {fmt(bf16_stats)}\n"
+    f"- Kernel filter FP8: `{filt_fp8}` matched {n_fp8} kernel(s); "
+    f"profiled: {fmt(fp8_stats)}\n"
     f"- Result status: `{status}`\n"
     f"- Manifest: `{manifest}`\n"
 )
-pattern = re.compile(rf"({re.escape(heading)})\n.*?(?=\n## |\Z)", re.DOTALL)
-text = pattern.sub(new_block.rstrip() + "\n", text)
+
+text = Path(mem).read_text()
+if heading in text:
+    pattern = re.compile(rf"({re.escape(heading)})\n.*?(?=\n## |\Z)",
+                         re.DOTALL)
+    text = pattern.sub(new_block.rstrip() + "\n", text)
+else:
+    if not text.endswith('\n'):
+        text += '\n'
+    text += '\n' + new_block
 Path(mem).write_text(text)
 PYEOF
-  else
-    {
-      printf '\n%s\n\n' "$heading"
-      printf -- '- Kernel filter BF16: `%s` matched %s kernel(s)\n' "$KERNEL_FILTER_BF16" "$N_KERNELS_MATCHED_BF16"
-      printf -- '- Kernel filter FP8: `%s` matched %s kernel(s)\n'  "$KERNEL_FILTER_FP8"  "$N_KERNELS_MATCHED_FP8"
-      printf -- '- Result status: `%s`\n' "$RESULT_STATUS"
-      printf -- '- Manifest: `%s`\n' "${OUTPUT_DIR}/manifest.json"
-    } >> "$memory_file"
-  fi
+
   log_ok "appended/updated CUTLASS subsection in ${memory_file}"
 
   resync_claude_md
@@ -1336,18 +1404,25 @@ print_dry_run() {
     log_info "would: skip configure / build (--skip-build)"
   fi
 
-  local profiler
+  local profiler bf16_names_file fp8_names_file bf16_csv_prefix fp8_csv_prefix
   profiler="$(cutlass_profiler_path)"
-  log_info "would: ${profiler} --mode=dry_run --operation=Gemm --kernels='${KERNEL_FILTER_BF16}'"
-  log_info "would: ${profiler} --mode=dry_run --operation=Gemm --kernels='${KERNEL_FILTER_FP8}'"
+  bf16_names_file="${OUTPUT_DIR}/dryrun_kernels_bf16.txt"
+  fp8_names_file="${OUTPUT_DIR}/dryrun_kernels_fp8.txt"
+  bf16_csv_prefix="${OUTPUT_DIR}/cutlass_profiler_bf16_${M}"
+  fp8_csv_prefix="${OUTPUT_DIR}/cutlass_profiler_fp8_${M}"
+
+  log_info "would: enumerate bf16 kernels by grep -E '${KERNEL_FILTER_BF16}' against \$BUILD_DIR/tools/library/generated_kernels.txt -> ${bf16_names_file}"
+  log_info "would: enumerate fp8  kernels by grep -E '${KERNEL_FILTER_FP8}' against \$BUILD_DIR/tools/library/generated_kernels.txt -> ${fp8_names_file}"
+  log_info "         (the cmake-emitted manifest is the source of truth; cutlass_profiler --mode=dry_run is silent for Gemm in v4.4.1)"
 
   if [[ "$DO_SMOKE" == "true" ]]; then
-    log_info "would: ${profiler} --operation=Gemm --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --kernels=<concrete-bf16-names>"
-    log_info "would: ${profiler} --operation=Gemm --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --kernels=<concrete-fp8-names>"
+    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${bf16_names_file} --output=${bf16_csv_prefix%/*}/smoke_bf16_1024"
+    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${fp8_names_file} --output=${fp8_csv_prefix%/*}/smoke_fp8_1024"
   fi
 
-  log_info "would: ${profiler} --operation=Gemm --m=${M} --n=${N} --k=${K} --warmup-iterations=${WARMUP_ITERATIONS} --profiling-iterations=${PROFILING_ITERATIONS} --kernels=<concrete-bf16-names> --output=${OUTPUT_DIR}/cutlass_profiler_bf16_${M}.csv"
-  log_info "would: ${profiler} --operation=Gemm --m=${M} --n=${N} --k=${K} --warmup-iterations=${WARMUP_ITERATIONS} --profiling-iterations=${PROFILING_ITERATIONS} --kernels=<concrete-fp8-names> --output=${OUTPUT_DIR}/cutlass_profiler_fp8_${M}.csv"
+  log_info "would: ${profiler} --m=${M} --n=${N} --k=${K} --warmup-iterations=${WARMUP_ITERATIONS} --profiling-iterations=${PROFILING_ITERATIONS} --verification-enabled=false --kernels-file=${bf16_names_file} --output=${bf16_csv_prefix}"
+  log_info "would: ${profiler} --m=${M} --n=${N} --k=${K} --warmup-iterations=${WARMUP_ITERATIONS} --profiling-iterations=${PROFILING_ITERATIONS} --verification-enabled=false --kernels-file=${fp8_names_file} --output=${fp8_csv_prefix}"
+  log_info "         (no --operation: v4.4.1 sm_120 BF16 kernels are blockwise_gemm not Gemm; the profiler appends .<op>.csv to --output, which the script then renames to ${bf16_csv_prefix}.csv / ${fp8_csv_prefix}.csv)"
 
   if [[ "$NO_SUMMARY" != "true" ]]; then
     log_info "would: write ${SUMMARY_DIR}/SUMMARY.md"
@@ -1405,11 +1480,15 @@ main() {
     log_info "skip-build: reusing cutlass_profiler at $(cutlass_profiler_path)"
     # Populate kernel counts from the existing manifest so the regenerated
     # manifest.json doesn't claim 0 matches when a prior build's kernels are
-    # what we're profiling.
+    # what we're profiling. Apply the same per-precision zero-match abort as
+    # the non-skip-build path so AC-3 holds either way.
     if discover_generated_kernels_txt; then
       N_KERNELS_MATCHED_BF16="$(count_kernels_matching "${KERNEL_FILTER_BF16}")"
       N_KERNELS_MATCHED_FP8="$(count_kernels_matching "${KERNEL_FILTER_FP8}")"
       log_info "skip-build: kernels matched bf16=${N_KERNELS_MATCHED_BF16}, fp8=${N_KERNELS_MATCHED_FP8} (from ${GENERATED_KERNELS_TXT})"
+      if (( N_KERNELS_MATCHED_BF16 == 0 )) || (( N_KERNELS_MATCHED_FP8 == 0 )); then
+        handle_empty_kernels
+      fi
     fi
   else
     configure_cmake
@@ -1431,6 +1510,34 @@ main() {
 
   if [[ "$UPDATE_MEMORY" == "true" ]]; then
     update_memory
+  fi
+
+  # AC-4: surface profiler failures as a non-zero script exit. Required
+  # precisions are those whose kernel filter matched at least one kernel —
+  # zero-match precisions are allowed to skip profiling silently (the user
+  # opted into that via --allow-empty-kernels; otherwise verify_kernel_filter
+  # already aborted the run earlier).
+  local bf16_csv="${OUTPUT_DIR}/cutlass_profiler_bf16_${M}.csv"
+  local fp8_csv="${OUTPUT_DIR}/cutlass_profiler_fp8_${M}.csv"
+  local fail_reason=""
+  if (( N_KERNELS_MATCHED_BF16 > 0 )); then
+    if (( PROFILE_BF16_EXIT_CODE != 0 )); then
+      fail_reason="BF16 profile exited ${PROFILE_BF16_EXIT_CODE}; see ${OUTPUT_DIR}/cutlass_profiler_bf16_${M}.log"
+    elif [[ ! -f "$bf16_csv" ]]; then
+      fail_reason="required BF16 CSV not produced: ${bf16_csv}"
+    fi
+  fi
+  if [[ -z "$fail_reason" ]] && (( N_KERNELS_MATCHED_FP8 > 0 )); then
+    if (( PROFILE_FP8_EXIT_CODE != 0 )); then
+      fail_reason="FP8 profile exited ${PROFILE_FP8_EXIT_CODE}; see ${OUTPUT_DIR}/cutlass_profiler_fp8_${M}.log"
+    elif [[ ! -f "$fp8_csv" ]]; then
+      fail_reason="required FP8 CSV not produced: ${fp8_csv}"
+    fi
+  fi
+  if [[ -n "$fail_reason" ]]; then
+    log_err "$fail_reason"
+    final_summary_echo
+    exit 4
   fi
 
   final_summary_echo

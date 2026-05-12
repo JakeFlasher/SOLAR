@@ -62,3 +62,10 @@ NVIDIA RTX 50-series "AI TOPS" rating is **sparse FP4**, computed at boost clock
 - Kernel filter FP8: `*sm120*fp8*` matched 0 kernel(s)
 - Result status: `blockscaled_only`
 - Manifest: `/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/manifest.json`
+
+## CUTLASS v4.4.1 cross-check (run: 2026-05-12T17:07:00Z)
+
+- Kernel filter BF16: `*sm120*bf16*` matched 98 kernel(s); profiled: best 55.85 TFLOPS, median 49.44 TFLOPS (n=48)
+- Kernel filter FP8: `*sm120*e4m3*` matched 98 kernel(s); profiled: best 57.21 TFLOPS, median 49.38 TFLOPS (n=48)
+- Result status: `blockscaled_only`
+- Manifest: `/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/manifest.json`

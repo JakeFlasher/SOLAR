@@ -26,10 +26,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 15422
 
-         Runtime: 3.43342  ms
-          Memory: 19.3411 GiB/s
+         Runtime: 5.38241  ms
+          Memory: 12.3376 GiB/s
 
-            Math: 320277 GFLOP/s
+            Math: 204304 GFLOP/s
 
 
 
@@ -56,10 +56,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 15422
 
-         Runtime: 6.45781  ms
-          Memory: 10.2831 GiB/s
+         Runtime: 9.85375  ms
+          Memory: 6.73919 GiB/s
 
-            Math: 170282 GFLOP/s
+            Math: 111597 GFLOP/s
 
 Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_profiler_bf16_8192.block_scaled_gemm.csv'
 
@@ -89,10 +89,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 15.9002  ms
-          Memory: 15.9688 GiB/s
+         Runtime: 21.9493  ms
+          Memory: 11.5679 GiB/s
 
-            Math: 69159.4 GFLOP/s
+            Math: 50099.4 GFLOP/s
 
 
 
@@ -120,10 +120,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.5696  ms
-          Memory: 16.1833 GiB/s
+         Runtime: 19.7984  ms
+          Memory: 12.7267 GiB/s
 
-            Math: 70627.7 GFLOP/s
+            Math: 55542.2 GFLOP/s
 
 
 
@@ -151,10 +151,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.4449  ms
-          Memory: 16.314 GiB/s
+         Runtime: 22.3229  ms
+          Memory: 11.2874 GiB/s
 
-            Math: 71197.8 GFLOP/s
+            Math: 49260.9 GFLOP/s
 
 
 
@@ -182,10 +182,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4096
 
-         Runtime: 15.3719  ms
-          Memory: 16.2654 GiB/s
+         Runtime: 22.0577  ms
+          Memory: 11.3353 GiB/s
 
-            Math: 71536.2 GFLOP/s
+            Math: 49853.1 GFLOP/s
 
 
 
@@ -213,10 +213,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 15.8869  ms
-          Memory: 15.9821 GiB/s
+         Runtime: 22.8075  ms
+          Memory: 11.1326 GiB/s
 
-            Math: 69217.1 GFLOP/s
+            Math: 48214.1 GFLOP/s
 
 
 
@@ -244,10 +244,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.4985  ms
-          Memory: 16.2575 GiB/s
+         Runtime: 20.3717  ms
+          Memory: 12.3685 GiB/s
 
-            Math: 70951.5 GFLOP/s
+            Math: 53979 GFLOP/s
 
 
 
@@ -275,10 +275,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.711  ms
-          Memory: 16.0377 GiB/s
+         Runtime: 19.9161  ms
+          Memory: 12.6515 GiB/s
 
-            Math: 69992.1 GFLOP/s
+            Math: 55213.9 GFLOP/s
 
 
 
@@ -306,10 +306,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4096
 
-         Runtime: 15.3724  ms
-          Memory: 16.2649 GiB/s
+         Runtime: 20.5259  ms
+          Memory: 12.1812 GiB/s
 
-            Math: 71533.8 GFLOP/s
+            Math: 53573.5 GFLOP/s
 
 
 
@@ -337,10 +337,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 15.7515  ms
-          Memory: 8.18374 GiB/s
+         Runtime: 21.6478  ms
+          Memory: 5.95471 GiB/s
 
-            Math: 69812.1 GFLOP/s
+            Math: 50797.1 GFLOP/s
 
 
 
@@ -368,10 +368,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.3428  ms
-          Memory: 8.27545 GiB/s
+         Runtime: 21.8875  ms
+          Memory: 5.80095 GiB/s
 
-            Math: 71671.9 GFLOP/s
+            Math: 50240.8 GFLOP/s
 
 
 
@@ -399,10 +399,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.5834  ms
-          Memory: 8.14765 GiB/s
+         Runtime: 24.2844  ms
+          Memory: 5.22839 GiB/s
 
-            Math: 70565 GFLOP/s
+            Math: 45282 GFLOP/s
 
 
 
@@ -430,10 +430,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8191
 
-         Runtime: 15.3771  ms
-          Memory: 8.13095 GiB/s
+         Runtime: 20.781  ms
+          Memory: 6.01657 GiB/s
 
-            Math: 71511.9 GFLOP/s
+            Math: 52915.8 GFLOP/s
 
 
 
@@ -461,10 +461,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 15.8903  ms
-          Memory: 8.11225 GiB/s
+         Runtime: 22.2808  ms
+          Memory: 5.78552 GiB/s
 
-            Math: 69202.2 GFLOP/s
+            Math: 49353.9 GFLOP/s
 
 
 
@@ -492,10 +492,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.4217  ms
-          Memory: 8.2331 GiB/s
+         Runtime: 22.0816  ms
+          Memory: 5.74996 GiB/s
 
-            Math: 71305.1 GFLOP/s
+            Math: 49799.2 GFLOP/s
 
 
 
@@ -523,10 +523,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.6193  ms
-          Memory: 8.12894 GiB/s
+         Runtime: 19.6906  ms
+          Memory: 6.44817 GiB/s
 
-            Math: 70403 GFLOP/s
+            Math: 55846.2 GFLOP/s
 
 
 
@@ -554,10 +554,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8191
 
-         Runtime: 15.2818  ms
-          Memory: 8.18168 GiB/s
+         Runtime: 22.6095  ms
+          Memory: 5.53001 GiB/s
 
-            Math: 71958 GFLOP/s
+            Math: 48636.5 GFLOP/s
 
 
 
@@ -585,10 +585,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 15.9963  ms
-          Memory: 15.8728 GiB/s
+         Runtime: 21.5551  ms
+          Memory: 11.7794 GiB/s
 
-            Math: 68743.7 GFLOP/s
+            Math: 51015.6 GFLOP/s
 
 
 
@@ -616,10 +616,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.5115  ms
-          Memory: 16.244 GiB/s
+         Runtime: 21.471  ms
+          Memory: 11.7353 GiB/s
 
-            Math: 70892.5 GFLOP/s
+            Math: 51215.3 GFLOP/s
 
 
 
@@ -647,10 +647,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.4449  ms
-          Memory: 16.314 GiB/s
+         Runtime: 20.5648  ms
+          Memory: 12.2524 GiB/s
 
-            Math: 71197.8 GFLOP/s
+            Math: 53472.3 GFLOP/s
 
 
 
@@ -678,10 +678,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4096
 
-         Runtime: 15.3842  ms
-          Memory: 16.2525 GiB/s
+         Runtime: 21.2377  ms
+          Memory: 11.773 GiB/s
 
-            Math: 71479.1 GFLOP/s
+            Math: 51778.1 GFLOP/s
 
 
 
@@ -709,10 +709,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 15.8075  ms
-          Memory: 16.0624 GiB/s
+         Runtime: 22.0205  ms
+          Memory: 11.5305 GiB/s
 
-            Math: 69564.6 GFLOP/s
+            Math: 49937.5 GFLOP/s
 
 
 
@@ -740,10 +740,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.6416  ms
-          Memory: 16.1089 GiB/s
+         Runtime: 22.7153  ms
+          Memory: 11.0925 GiB/s
 
-            Math: 70302.6 GFLOP/s
+            Math: 48410 GFLOP/s
 
 
 
@@ -771,10 +771,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 15.5585  ms
-          Memory: 16.195 GiB/s
+         Runtime: 22.1964  ms
+          Memory: 11.3518 GiB/s
 
-            Math: 70678.4 GFLOP/s
+            Math: 49541.6 GFLOP/s
 
 
 
@@ -802,10 +802,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4096
 
-         Runtime: 15.5939  ms
-          Memory: 16.0339 GiB/s
+         Runtime: 22.2058  ms
+          Memory: 11.2597 GiB/s
 
-            Math: 70517.7 GFLOP/s
+            Math: 49520.8 GFLOP/s
 
 
 
@@ -833,10 +833,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 15.5418  ms
-          Memory: 8.29419 GiB/s
+         Runtime: 21.8953  ms
+          Memory: 5.88738 GiB/s
 
-            Math: 70754.3 GFLOP/s
+            Math: 50222.8 GFLOP/s
 
 
 
@@ -864,10 +864,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.5585  ms
-          Memory: 8.16071 GiB/s
+         Runtime: 22.2299  ms
+          Memory: 5.7116 GiB/s
 
-            Math: 70678.1 GFLOP/s
+            Math: 49466.9 GFLOP/s
 
 
 
@@ -895,10 +895,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.3692  ms
-          Memory: 8.26121 GiB/s
+         Runtime: 22.2493  ms
+          Memory: 5.70662 GiB/s
 
-            Math: 71548.6 GFLOP/s
+            Math: 49423.8 GFLOP/s
 
 
 
@@ -926,10 +926,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8191
 
-         Runtime: 15.5889  ms
-          Memory: 8.0205 GiB/s
+         Runtime: 21.292  ms
+          Memory: 5.87217 GiB/s
 
-            Math: 70540.4 GFLOP/s
+            Math: 51645.9 GFLOP/s
 
 
 
@@ -957,10 +957,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 15.55  ms
-          Memory: 8.28982 GiB/s
+         Runtime: 21.5245  ms
+          Memory: 5.98882 GiB/s
 
-            Math: 70717 GFLOP/s
+            Math: 51088.2 GFLOP/s
 
 
 
@@ -988,10 +988,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.6704  ms
-          Memory: 8.10245 GiB/s
+         Runtime: 21.5351  ms
+          Memory: 5.89587 GiB/s
 
-            Math: 70173.5 GFLOP/s
+            Math: 51062.9 GFLOP/s
 
 
 
@@ -1019,10 +1019,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 15.6985  ms
-          Memory: 8.08791 GiB/s
+         Runtime: 22.2358  ms
+          Memory: 5.71008 GiB/s
 
-            Math: 70047.7 GFLOP/s
+            Math: 49453.8 GFLOP/s
 
 
 
@@ -1050,10 +1050,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8191
 
-         Runtime: 15.404  ms
-          Memory: 8.11677 GiB/s
+         Runtime: 22.9026  ms
+          Memory: 5.45923 GiB/s
 
-            Math: 71387.1 GFLOP/s
+            Math: 48014.1 GFLOP/s
 
 
 
@@ -1081,10 +1081,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 24.8727  ms
-          Memory: 10.2082 GiB/s
+         Runtime: 38.5946  ms
+          Memory: 6.5788 GiB/s
 
-            Math: 44211 GFLOP/s
+            Math: 28492.2 GFLOP/s
 
 
 
@@ -1112,10 +1112,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 23.8573  ms
-          Memory: 10.5615 GiB/s
+         Runtime: 41.8521  ms
+          Memory: 6.02044 GiB/s
 
-            Math: 46092.7 GFLOP/s
+            Math: 26274.5 GFLOP/s
 
 
 
@@ -1143,10 +1143,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 24.563  ms
-          Memory: 10.3369 GiB/s
+         Runtime: 43.1689  ms
+          Memory: 5.88169 GiB/s
 
-            Math: 44768.4 GFLOP/s
+            Math: 25473.1 GFLOP/s
 
 
 
@@ -1174,10 +1174,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 23.854  ms
-          Memory: 10.5629 GiB/s
+         Runtime: 45.6791  ms
+          Memory: 5.51605 GiB/s
 
-            Math: 46099 GFLOP/s
+            Math: 24073.3 GFLOP/s
 
 
 
@@ -1205,10 +1205,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 24.7955  ms
-          Memory: 5.19878 GiB/s
+         Runtime: 45.5361  ms
+          Memory: 2.83086 GiB/s
 
-            Math: 44348.6 GFLOP/s
+            Math: 24148.9 GFLOP/s
 
 
 
@@ -1236,10 +1236,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 24.0631  ms
-          Memory: 5.27648 GiB/s
+         Runtime: 42.0628  ms
+          Memory: 3.01854 GiB/s
 
-            Math: 45698.5 GFLOP/s
+            Math: 26143 GFLOP/s
 
 
 
@@ -1267,10 +1267,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 25.0627  ms
-          Memory: 5.14336 GiB/s
+         Runtime: 44.2326  ms
+          Memory: 2.91428 GiB/s
 
-            Math: 43875.9 GFLOP/s
+            Math: 24860.6 GFLOP/s
 
 
 
@@ -1298,10 +1298,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 25.9126  ms
-          Memory: 4.89987 GiB/s
+         Runtime: 42.0154  ms
+          Memory: 3.02195 GiB/s
 
-            Math: 42436.7 GFLOP/s
+            Math: 26172.5 GFLOP/s
 
 
 
@@ -1329,10 +1329,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 26.5155  ms
-          Memory: 9.57578 GiB/s
+         Runtime: 46.3123  ms
+          Memory: 5.48247 GiB/s
 
-            Math: 41471.9 GFLOP/s
+            Math: 23744.1 GFLOP/s
 
 
 
@@ -1360,10 +1360,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 26.6391  ms
-          Memory: 9.4586 GiB/s
+         Runtime: 44.5559  ms
+          Memory: 5.65511 GiB/s
 
-            Math: 41279.4 GFLOP/s
+            Math: 24680.1 GFLOP/s
 
 
 
@@ -1391,10 +1391,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4033
 
-         Runtime: 27.0926  ms
-          Memory: 9.37181 GiB/s
+         Runtime: 43.1089  ms
+          Memory: 5.88988 GiB/s
 
-            Math: 40588.5 GFLOP/s
+            Math: 25508.5 GFLOP/s
 
 
 
@@ -1422,10 +1422,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 4064
 
-         Runtime: 25.0886  ms
-          Memory: 10.0432 GiB/s
+         Runtime: 41.991  ms
+          Memory: 6.00054 GiB/s
 
-            Math: 43830.6 GFLOP/s
+            Math: 26187.7 GFLOP/s
 
 
 
@@ -1453,10 +1453,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 24.9643  ms
-          Memory: 5.16363 GiB/s
+         Runtime: 33.775  ms
+          Memory: 3.81662 GiB/s
 
-            Math: 44048.8 GFLOP/s
+            Math: 32558 GFLOP/s
 
 
 
@@ -1484,10 +1484,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 25.9708  ms
-          Memory: 4.88889 GiB/s
+         Runtime: 32.9129  ms
+          Memory: 3.8577 GiB/s
 
-            Math: 42341.6 GFLOP/s
+            Math: 33410.7 GFLOP/s
 
 
 
@@ -1515,10 +1515,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 7944
 
-         Runtime: 26.329  ms
-          Memory: 4.89598 GiB/s
+         Runtime: 34.512  ms
+          Memory: 3.73511 GiB/s
 
-            Math: 41765.6 GFLOP/s
+            Math: 31862.7 GFLOP/s
 
 
 
@@ -1546,10 +1546,10 @@ Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_prof
            FLOPs: 1099645845504  flops
            FLOPs/Byte: 8065
 
-         Runtime: 24.2304  ms
-          Memory: 5.24004 GiB/s
+         Runtime: 33.1049  ms
+          Memory: 3.83533 GiB/s
 
-            Math: 45382.9 GFLOP/s
+            Math: 33217 GFLOP/s
 
 Wrote results to '/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/cutlass_profiler_bf16_8192.blockwise_gemm.csv'
 

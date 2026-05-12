@@ -577,25 +577,38 @@ enumerate_kernels() {
   esac
 
   log_section "enumerate-${precision}"
-  local profiler
-  profiler="$(cutlass_profiler_path)"
-  log_info "${profiler} --mode=dry_run --operation=Gemm --kernels='${pattern}'"
 
-  local raw
-  if ! raw="$("${profiler}" --mode=dry_run --operation=Gemm --kernels="${pattern}" 2>&1)"; then
-    log_warn "dry-run for ${precision} returned non-zero; capturing output for the log"
+  if [[ -z "$GENERATED_KERNELS_TXT" || ! -f "$GENERATED_KERNELS_TXT" ]]; then
+    discover_generated_kernels_txt || true
   fi
-  printf '%s\n' "$raw" > "${outfile}"
+  if [[ -z "$GENERATED_KERNELS_TXT" || ! -f "$GENERATED_KERNELS_TXT" ]]; then
+    log_warn "${precision}: kernel manifest not found under ${BUILD_DIR}; cannot enumerate"
+    : > "${outfile}"
+    case "$precision" in
+      bf16) DRYRUN_KERNEL_NAMES_BF16="" ;;
+      fp8)  DRYRUN_KERNEL_NAMES_FP8=""  ;;
+    esac
+    return 0
+  fi
+
+  # cutlass_profiler --mode=dry_run / --mode=enumerate emit no output for Gemm
+  # in v4.4.1, so source concrete names from the cmake-emitted manifest the
+  # configure step already produced. Same data, different source.
+  local glob_to_regex
+  glob_to_regex="$(printf '%s' "$pattern" | sed -e 's/[][\.|\^\$+(){}]/\\&/g' -e 's/\*/.*/g' -e 's/?/./g')"
+  log_info "matching ${pattern} against ${GENERATED_KERNELS_TXT}"
 
   local names
-  names="$(printf '%s\n' "$raw" | grep -oE 'cutlass[a-zA-Z0-9_]*' | sort -u || true)"
+  names="$(grep -E -- "${glob_to_regex}" "${GENERATED_KERNELS_TXT}" || true)"
+  printf '%s\n' "${names}" > "${outfile}"
+
   case "$precision" in
     bf16) DRYRUN_KERNEL_NAMES_BF16="$names" ;;
     fp8)  DRYRUN_KERNEL_NAMES_FP8="$names"  ;;
   esac
 
   local count
-  count="$(printf '%s\n' "$names" | grep -cE '.' || true)"
+  count="$(printf '%s\n' "${names}" | grep -cE '.' || true)"
   log_info "${precision}: enumerated ${count} concrete kernel name(s) into ${outfile}"
 }
 
@@ -626,6 +639,12 @@ run_profiler() {
   local precision="$1" dim="$2" warmup="$3" iters="$4"
   local csv="${OUTPUT_DIR}/cutlass_profiler_${precision}_${dim}.csv"
   local log="${OUTPUT_DIR}/cutlass_profiler_${precision}_${dim}.log"
+  # cutlass_profiler appends `.<operation>.csv` to whatever --output= path is
+  # passed, so we hand it the bare prefix and rename the resulting file
+  # afterwards to match the AC-4 expected `.csv` filename.
+  local csv_base="${csv%.csv}"
+  local csv_actual="${csv_base}.gemm.csv"
+  local names_file="${OUTPUT_DIR}/dryrun_kernels_${precision}.txt"
 
   log_section "profile-${precision}-${dim}"
 
@@ -640,8 +659,8 @@ run_profiler() {
     log_warn "0 matching kernels; nothing to profile for ${precision}"
     {
       printf '0 matching kernels; nothing to profile for %s\n' "$precision"
-      printf '\n--- dry-run output ---\n'
-      cat "${OUTPUT_DIR}/dryrun_kernels_${precision}.txt" 2>/dev/null || true
+      printf '\n--- enumerated kernel list ---\n'
+      cat "${names_file}" 2>/dev/null || true
     } > "$log"
     case "$precision" in
       bf16) PROFILE_BF16_EXIT_CODE=0 ;;
@@ -657,20 +676,32 @@ run_profiler() {
     fp8)  FP8_PRE_STATE="$pre"  ;;
   esac
 
-  local profiler kernels_csv exit_code=0
+  local profiler exit_code=0
   profiler="$(cutlass_profiler_path)"
-  kernels_csv="$(printf '%s\n' "$names" | paste -sd, -)"
 
+  # Clean any prior per-operation CSVs from a previous run with this prefix.
+  while IFS= read -r f; do rm -f -- "$f"; done < <(find "$(dirname "${csv_base}")" -maxdepth 1 -type f -name "$(basename "${csv_base}").*.csv" -print 2>/dev/null)
+  rm -f -- "${csv}"
+
+  # No --operation: v4.4.1 sm_120 BF16 kernels are blockwise_gemm operations,
+  # not Gemm. Letting the profiler match across all operation kinds writes one
+  # CSV per kind; we then pick the populated one as the canonical output.
+  #
+  # --verification-enabled=false: the default verification path runs a cuBLAS
+  # reference matmul per kernel. On RTX 5060 cuBLAS BF16 falls back to an
+  # sm_80 kernel at ~28 TFLOPS, so verifying 98 kernels at 8192^3 takes
+  # >1 hour. We're cross-checking achieved TFLOPS, not correctness, so the
+  # profiler's own warmup+timing loop is sufficient.
   local -a argv=(
     "${profiler}"
-    --operation=Gemm
     "--m=${dim}"
     "--n=${dim}"
     "--k=${dim}"
     "--warmup-iterations=${warmup}"
     "--profiling-iterations=${iters}"
-    "--kernels=${kernels_csv}"
-    "--output=${csv}"
+    "--verification-enabled=false"
+    "--kernels-file=${names_file}"
+    "--output=${csv_base}"
   )
   log_info "${argv[*]}"
 
@@ -687,9 +718,36 @@ run_profiler() {
     fp8)  FP8_POST_STATE="$post";  PROFILE_FP8_EXIT_CODE=$exit_code  ;;
   esac
 
-  if [[ -f "$csv" ]]; then
-    log_ok "${precision} ${dim}^3 csv -> ${csv}"
-  else
+  local -a per_op=()
+  while IFS= read -r f; do per_op+=("$f"); done < <(find "$(dirname "${csv_base}")" -maxdepth 1 -type f -name "$(basename "${csv_base}").*.csv" -print 2>/dev/null | sort)
+
+  local primary="" primary_rows=0 op_name=""
+  for f in "${per_op[@]}"; do
+    local rows
+    rows=$(($(wc -l < "$f") - 1))
+    if (( rows > primary_rows )); then
+      primary="$f"
+      primary_rows=$rows
+    fi
+  done
+
+  if [[ -n "$primary" ]]; then
+    op_name="$(basename "$primary")"
+    op_name="${op_name#$(basename "${csv_base}").}"
+    op_name="${op_name%.csv}"
+    mv -- "$primary" "$csv"
+    log_ok "${precision} ${dim}^3 csv -> ${csv} (${primary_rows} data row(s) from operation '${op_name}')"
+  fi
+
+  # Drop empty per-op leftovers; keep any that have data alongside the primary
+  for f in "${per_op[@]}"; do
+    [[ -f "$f" ]] || continue
+    if (( $(wc -l < "$f") <= 1 )); then
+      rm -f -- "$f"
+    fi
+  done
+
+  if [[ ! -f "$csv" ]]; then
     log_warn "${precision} ${dim}^3 csv missing — see ${log}"
   fi
 }
@@ -728,7 +786,18 @@ classify_result_status() {
 
   while IFS= read -r kname; do
     [[ -z "$kname" ]] && continue
-    if [[ "$kname" == *blockscaled* ]] || [[ "$kname" == *blockwise* ]] || [[ "$kname" == *nvf4* ]] || [[ "$kname" == *nvfp4* ]] || [[ "$kname" == *mxf8* ]] || [[ "$kname" == *mxfp8* ]] || [[ "$kname" == *mxf6* ]] || [[ "$kname" == *mxf4* ]]; then
+    local low_prec=false out_bf16=false
+    case "$kname" in
+      *blockscaled*|*blockwise*|*nvf4*|*nvfp4*|*mxf8*|*mxfp8*|*mxf6*|*mxf4*|*e4m3*|*e5m2*|*e2m1*|*e3m2*)
+        low_prec=true ;;
+    esac
+    case "$kname" in
+      *bf16*|*fp16*|*_f16_*|*_f32_*)
+        out_bf16=true ;;
+    esac
+    if [[ "$low_prec" == "true" && "$out_bf16" == "true" ]]; then
+      has_blockscaled=true
+    elif [[ "$kname" == *blockscaled* || "$kname" == *blockwise* || "$kname" == *nvfp4* || "$kname" == *nvf4* ]]; then
       has_blockscaled=true
     else
       has_dense=true
@@ -940,6 +1009,26 @@ def load_arch_peaks(p):
             fp8_tflops = fp8_mac * 2 * freq / 1000.0
     return bf16_tflops, fp8_tflops
 
+TFLOPS_KEYS = (
+    ('GFLOPs', 1000.0),
+    ('GFLOPS', 1000.0),
+    ('tflops', 1.0),
+    ('TFLOPS', 1.0),
+    ('Flops/Sec', 1e12),
+    ('Flop/s', 1e12),
+)
+
+def extract_tflops(row):
+    for key, divisor in TFLOPS_KEYS:
+        v = row.get(key)
+        if v is None or v == '':
+            continue
+        try:
+            return float(v) / divisor
+        except (TypeError, ValueError):
+            continue
+    return None
+
 def parse_csv_tflops(path):
     if not path or not Path(path).is_file():
         return None
@@ -947,15 +1036,9 @@ def parse_csv_tflops(path):
     with open(path, newline='') as fh:
         reader = csv.DictReader(fh)
         for row in reader:
-            for key in ('GFLOPs', 'GFLOPS', 'Flops/Sec', 'Flop/s'):
-                v = row.get(key)
-                if v is None:
-                    continue
-                try:
-                    rows.append(float(v) / 1000.0)
-                except (TypeError, ValueError):
-                    continue
-                break
+            t = extract_tflops(row)
+            if t is not None:
+                rows.append(t)
     if not rows:
         return None
     rows.sort(reverse=True)
@@ -968,22 +1051,20 @@ def split_dense_blockscaled(path):
     with open(path, newline='') as fh:
         reader = csv.DictReader(fh)
         for row in reader:
-            tflops = None
-            for key in ('GFLOPs', 'GFLOPS', 'Flops/Sec', 'Flop/s'):
-                v = row.get(key)
-                if v is None:
-                    continue
-                try:
-                    tflops = float(v) / 1000.0
-                except (TypeError, ValueError):
-                    pass
-                break
+            tflops = extract_tflops(row)
             if tflops is None:
                 continue
             kname = row.get('Operation') or row.get('Kernel') or ''
             kname_l = kname.lower()
-            is_blocked = any(tok in kname_l for tok in
-                             ('blockscaled', 'blockwise', 'nvfp4', 'nvf4', 'mxfp8', 'mxf8', 'mxfp6', 'mxf6', 'mxfp4', 'mxf4'))
+            low_prec_tokens = ('blockscaled', 'blockwise', 'nvfp4', 'nvf4',
+                               'mxfp8', 'mxf8', 'mxfp6', 'mxf6', 'mxfp4', 'mxf4',
+                               'e4m3', 'e5m2', 'e2m1', 'e3m2')
+            mixed_out_tokens = ('bf16', 'fp16', 'f16')
+            has_low = any(tok in kname_l for tok in low_prec_tokens)
+            has_mixed = any(tok in kname_l for tok in mixed_out_tokens)
+            explicit_block = any(tok in kname_l for tok in
+                                 ('blockscaled', 'blockwise', 'nvfp4', 'nvf4'))
+            is_blocked = explicit_block or (has_low and has_mixed)
             (blocks_rows if is_blocked else dense_rows).append(tflops)
     def summarize(xs):
         if not xs:
@@ -1169,7 +1250,14 @@ for sec in sections:
     if not fpath.is_file():
         new_sections.append(sec)
         continue
-    body = fpath.read_text().rstrip()
+    body = fpath.read_text()
+    # Strip YAML frontmatter (`---\n…\n---\n`) so its delimiters don't get
+    # interpreted as CLAUDE.md section separators on subsequent re-syncs.
+    if body.startswith('---\n'):
+        end = body.find('\n---\n', 4)
+        if end > 0:
+            body = body[end + 5:]
+    body = body.lstrip('\n').rstrip()
     head_match = re.search(r"(.*?Source: \[[^\]]+\]\([^)]+\))", sec, re.DOTALL)
     if head_match:
         head = head_match.group(1)
@@ -1315,6 +1403,14 @@ main() {
   if [[ "$SKIP_BUILD" == "true" ]]; then
     require_profiler_binary
     log_info "skip-build: reusing cutlass_profiler at $(cutlass_profiler_path)"
+    # Populate kernel counts from the existing manifest so the regenerated
+    # manifest.json doesn't claim 0 matches when a prior build's kernels are
+    # what we're profiling.
+    if discover_generated_kernels_txt; then
+      N_KERNELS_MATCHED_BF16="$(count_kernels_matching "${KERNEL_FILTER_BF16}")"
+      N_KERNELS_MATCHED_FP8="$(count_kernels_matching "${KERNEL_FILTER_FP8}")"
+      log_info "skip-build: kernels matched bf16=${N_KERNELS_MATCHED_BF16}, fp8=${N_KERNELS_MATCHED_FP8} (from ${GENERATED_KERNELS_TXT})"
+    fi
   else
     configure_cmake
     verify_kernel_filter

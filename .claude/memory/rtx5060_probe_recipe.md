@@ -28,3 +28,10 @@ NVIDIA RTX 50-series "AI TOPS" rating is **sparse FP4**, computed at boost clock
 - FP8 e4m3 8192³ GEMM picks `nvjet_sm120_qqtsq_mma_*_tmaAB_*` (Blackwell-native, uses TMA) and hits **per_cycle_active 6.24 / peak 6.50 = 96% utilization → 106 TFLOPS achieved (74% of 143 spec).
 - BF16 8192³ GEMM picks `cutlass_80_tensorop_bf16_s16816gemm_*` (Ampere-era fallback, no sm_120 BF16 kernel in cuBLAS 13.4 yet) → 50% utilization → only 28 TFLOPS achieved (39% of 71.5 spec). The yaml's 71.5 TFLOPS BF16 spec is still correct — the gap is a *library tuning* gap, not a hardware peak gap. This will likely close as cuBLAS adds sm_120-native BF16 kernels.
 - FP16 wmma microbench confirms `sm__inst_executed_pipe_tensor.sum.peak_sustained = 6.50 inst/cycle` (identical to BF16) → 5th-gen TC has FP16 == BF16 throughput.
+
+## CUTLASS v4.4.1 cross-check (run: 2026-05-12T16:37:54Z)
+
+- Kernel filter BF16: `*sm120*bf16*` matched 98 kernel(s)
+- Kernel filter FP8: `*sm120*fp8*` matched 0 kernel(s)
+- Result status: `blockscaled_only`
+- Manifest: `/home/jakeshea/SOLAR/measurements/rtx5060/cutlass/manifest.json`

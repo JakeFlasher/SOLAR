@@ -1413,11 +1413,13 @@ print_dry_run() {
 
   log_info "would: enumerate bf16 kernels by grep -E '${KERNEL_FILTER_BF16}' against \$BUILD_DIR/tools/library/generated_kernels.txt -> ${bf16_names_file}"
   log_info "would: enumerate fp8  kernels by grep -E '${KERNEL_FILTER_FP8}' against \$BUILD_DIR/tools/library/generated_kernels.txt -> ${fp8_names_file}"
-  log_info "         (the cmake-emitted manifest is the source of truth; cutlass_profiler --mode=dry_run is silent for Gemm in v4.4.1)"
+  log_info "         (the cmake-emitted manifest is the source of truth; the profiler's built-in kernel-listing modes emit nothing for the Gemm operation kind in v4.4.1, so we read the manifest directly)"
 
   if [[ "$DO_SMOKE" == "true" ]]; then
-    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${bf16_names_file} --output=${bf16_csv_prefix%/*}/smoke_bf16_1024"
-    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${fp8_names_file} --output=${fp8_csv_prefix%/*}/smoke_fp8_1024"
+    # run_profiler builds its --output prefix as $OUTPUT_DIR/cutlass_profiler_<precision>_<dim>
+    # so smoke at 1024^3 reuses the same naming, not a 'smoke_' alias.
+    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${bf16_names_file} --output=${OUTPUT_DIR}/cutlass_profiler_bf16_1024"
+    log_info "would: ${profiler} --m=1024 --n=1024 --k=1024 --warmup-iterations=2 --profiling-iterations=3 --verification-enabled=false --kernels-file=${fp8_names_file} --output=${OUTPUT_DIR}/cutlass_profiler_fp8_1024"
   fi
 
   log_info "would: ${profiler} --m=${M} --n=${N} --k=${K} --warmup-iterations=${WARMUP_ITERATIONS} --profiling-iterations=${PROFILING_ITERATIONS} --verification-enabled=false --kernels-file=${bf16_names_file} --output=${bf16_csv_prefix}"

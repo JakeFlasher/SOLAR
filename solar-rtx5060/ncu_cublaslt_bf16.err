@@ -1,0 +1,10 @@
+cuBLASLt: heuristic returned 8 algos
+  algo[0] waves=315.08 ws=0 avg_ms=41.298 tflops=26.62
+  algo[1] waves=630.15 ws=65536 avg_ms=39.373 tflops=27.93
+  algo[2] waves=315.08 ws=0 avg_ms=41.932 tflops=26.22
+  algo[3] waves=157.54 ws=0 avg_ms=39.954 tflops=27.52
+  algo[4] waves=630.15 ws=32768 avg_ms=41.596 tflops=26.43
+  algo[5] waves=945.23 ws=32768 avg_ms=41.330 tflops=26.60
+  algo[6] waves=630.15 ws=32768 avg_ms=44.650 tflops=24.63
+  algo[7] waves=472.62 ws=16384 avg_ms=43.139 tflops=25.49
+BEST: algo[1] waves=630.15

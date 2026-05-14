@@ -1,0 +1,9 @@
+==PROF== Connected to process 2770764 (/tmp/solar-rtx5060/probe)
+==PROF== Disconnected from process 2770764
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","160736"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","851968"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","6.50"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","1733212"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","3.20"
+"0","2770764","probe","127.0.0.1","hmma_kernel(const __nv_bfloat16 *, const __nv_bfloat16 *, float *, int)","1","7","(32, 1, 1)","(104, 1, 1)","0","12.0","Command line profiler metrics","smsp__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","1727093.75"

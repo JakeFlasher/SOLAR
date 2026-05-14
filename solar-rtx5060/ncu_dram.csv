@@ -1,0 +1,8 @@
+==PROF== Connected to process 2770008 (/tmp/solar-rtx5060/probe)
+==PROF== Disconnected from process 2770008
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2770008","probe","127.0.0.1","dram_copy_kernel(const float4 *, float4 *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","dram__bytes.sum","byte","4309332480"
+"0","2770008","probe","127.0.0.1","dram_copy_kernel(const float4 *, float4 *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","dram__bytes.sum.peak_sustained","byte/cycle","32"
+"0","2770008","probe","127.0.0.1","dram_copy_kernel(const float4 *, float4 *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","dram__bytes.sum.peak_sustained.per_second","","n/a"
+"0","2770008","probe","127.0.0.1","dram_copy_kernel(const float4 *, float4 *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","333512406416.32"
+"0","2770008","probe","127.0.0.1","dram_copy_kernel(const float4 *, float4 *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","12921056"

@@ -1,0 +1,8 @@
+==PROF== Connected to process 2943279 (/tmp/solar-rtx5060/probe_fp16)
+==PROF== Disconnected from process 2943279
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2943279","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(416, 1, 1)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","12207808"
+"0","2943279","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(416, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","66560000"
+"0","2943279","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(416, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","6.50"
+"0","2943279","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(416, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","133497073.25"
+"0","2943279","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(416, 1, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","3.24"

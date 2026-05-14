@@ -1,0 +1,8 @@
+==PROF== Connected to process 2770608 (/tmp/solar-rtx5060/probe)
+==PROF== Disconnected from process 2770608
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2770608","probe","127.0.0.1","l2_kernel(float4 *, unsigned long long *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","8697696"
+"0","2770608","probe","127.0.0.1","l2_kernel(float4 *, unsigned long long *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","lts__t_bytes.sum","byte","8291565120"
+"0","2770608","probe","127.0.0.1","l2_kernel(float4 *, unsigned long long *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","lts__t_bytes.sum.peak_sustained","byte/cycle","1024"
+"0","2770608","probe","127.0.0.1","l2_kernel(float4 *, unsigned long long *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","lts__t_bytes.sum.peak_sustained.per_second","","n/a"
+"0","2770608","probe","127.0.0.1","l2_kernel(float4 *, unsigned long long *, unsigned long, int)","1","7","(256, 1, 1)","(208, 1, 1)","0","12.0","Command line profiler metrics","lts__t_bytes.sum.per_second","byte/s","953305923775.68"

@@ -1,0 +1,2 @@
+fp16_hmma,sm_count,blocks,threads,warps,iters
+fp16_hmma,84,1344,128,5376,20000

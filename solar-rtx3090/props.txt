@@ -1,0 +1,14 @@
+name=NVIDIA GeForce RTX 3090 Ti
+totalGlobalMem=25282478080
+l2CacheSize=6291456
+l2CacheSize_attr=6291456
+multiProcessorCount=84
+major=8
+minor=6
+clockRateKHz=1890000
+memoryClockRateKHz=10501000
+memoryBusWidthBits=384
+memoryBusWidth_prop=384
+sharedMemPerBlock=49152
+sharedMemPerMultiprocessor=102400
+warpSize=32

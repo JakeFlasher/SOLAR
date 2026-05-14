@@ -1,0 +1,2 @@
+mode,m,n,k,warmup,iters,avg_ms,tflops,heur_waves,workspace_bytes
+fp8_e4m3,8192,8192,8192,5,1,9.160832,120.023,78.769,67108864

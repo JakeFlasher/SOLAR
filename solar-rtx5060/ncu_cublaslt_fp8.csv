@@ -1,0 +1,9 @@
+==PROF== Connected to process 2954344 (/tmp/solar-rtx5060/lt_gemm)
+==PROF== Disconnected from process 2954344
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","96119357169.55"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","12843200"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","134217728"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","6.50"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","139910866.50"
+"0","2954344","lt_gemm","127.0.0.1","nvjet_sm120_qqtsq_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_TNNN","1","7","(64, 4, 1)","(128, 16, 1)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","6.24"

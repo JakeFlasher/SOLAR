@@ -1,0 +1,13 @@
+==PROF== Connected to process 320046 (/home/jakeshea/solar-rtx3090/probe_fp16)
+==PROF== Disconnected from process 320046
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","gpu__time_duration.sum","ns","7,744"
+"0","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","107,520"
+"0","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","84"
+"0","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","981,694"
+"0","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","9.20"
+"1","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","gpu__time_duration.sum","ns","2,762,816"
+"1","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","53,760,000"
+"1","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","84"
+"1","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","436,833,352"
+"1","320046","probe_fp16","127.0.0.1","hmma_fp16(float *, int)","1","7","(128, 1, 1)","(1344, 1, 1)","0","8.6","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","10.34"

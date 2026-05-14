@@ -1,0 +1,2 @@
+mode,m,n,k,warmup,iters,avg_ms,tflops,heur_waves,workspace_bytes
+bf16,8192,8192,8192,5,20,28.324871,38.818,24.381,268435456

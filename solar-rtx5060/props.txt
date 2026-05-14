@@ -1,0 +1,14 @@
+name=NVIDIA GeForce RTX 5060 Laptop GPU
+totalGlobalMem=8082096128
+l2CacheSize=33554432
+l2CacheSize_attr=33554432
+multiProcessorCount=26
+major=12
+minor=0
+clockRateKHz=1687000
+memoryClockRateKHz=12001000
+memoryBusWidthBits=128
+memoryBusWidth_prop=128
+sharedMemPerBlock=49152
+sharedMemPerMultiprocessor=102400
+warpSize=32

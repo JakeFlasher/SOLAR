@@ -1,0 +1,9 @@
+==PROF== Connected to process 2955171 (/tmp/solar-rtx5060/lt_gemm)
+==PROF== Disconnected from process 2955171
+"ID","Process ID","Process Name","Host Name","Kernel Name","Context","Stream","Block Size","Grid Size","Device","CC","Section Name","Metric Name","Metric Unit","Metric Value"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","dram__bytes.sum.per_second","byte/s","55446026326.17"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","gpu__time_duration.sum","ns","49585952"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum","inst","268435456"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained","inst/cycle","6.50"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.peak_sustained_active","inst","542558300.50"
+"0","2955171","lt_gemm","127.0.0.1","void Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_64x64_32x6_tn_align8>(Params)","1","7","(128, 1, 1)","(1024, 16, 2)","0","12.0","Command line profiler metrics","sm__inst_executed_pipe_tensor.sum.per_cycle_active","inst/cycle","3.22"
